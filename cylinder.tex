@@ -1,0 +1,32 @@
+\documentclass[dvipdfmx]{standalone}
+\usepackage{tikz,tikz-3dplot}
+
+\newcommand{\tdcylinder}[7]{% x, y, z, radius, height, theta_d, phi_d
+    \def\startAngle{270};
+    \CalculateSin{\startAngle};
+    \CalculateCos{\startAngle};
+    \CalculateSin{#6};
+    \CalculateCos{#6};
+    \CalculateSin{#7};
+    \CalculateCos{#7};
+    \tdplotcrossprod(\UseSin{#6} * \UseSin{#7}, -1 * \UseSin{#6} * \UseCos{#7}, \UseCos{#6})(0, 0, 1);
+
+    \filldraw [fill=white, draw=black] (#1 + #4, #2, #3) arc (0:360:#4);
+    \filldraw [fill=green, draw=black] (#1 + #4 * \UseCos{\startAngle}, #2 + #4 * \UseSin{\startAngle}, #3) arc (\startAngle:\startAngle + 180:#4) -- (#1 - #4 * \UseCos{\startAngle}, #2 - #4 * \UseSin{\startAngle}, #3 + #5) arc (\startAngle - 180:\startAngle:#4) -- cycle;
+    \filldraw [fill=white, draw=black] (#1 + #4, #2, #3 + #5) arc (0:360:#4);
+    %\draw[thick, ->] (0, 0, 0) -- (\UseSin{#6} * \UseSin{#7}, -1 * \UseSin{#6} * \UseCos{#7}, \UseCos{#6});
+    \draw[->] (#1, #2, #3) -- (#1 + \tdplotresx * #4, #2 + \tdplotresy * #4, #3 + \tdplotresz * #4);
+    %\draw[->] (#1, #2, #3) -- (#1 + \tdplotresx / (\tdplotresx * \tdplotresx + \tdplotresy * \tdplotresy + \tdplotresz * \tdplotresz) * #4, #2 + \tdplotresy * #4, #3 + \tdplotresz * #4);
+}
+
+\begin{document}
+\def\theta_d{60}
+\def\phi_d{0}
+\tdplotsetmaincoords{\theta_d}{\phi_d}
+\begin{tikzpicture}[tdplot_main_coords]
+    \tdcylinder{0}{0}{0}{3}{5}{\theta_d}{\phi_d};
+    \draw[thick, ->] (0, 0, 0) -- (10, 0, 0) node[left]{$x$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 10, 0) node[below]{$y$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 0, 10) node[left]{$z$};
+\end{tikzpicture}
+\end{document}
