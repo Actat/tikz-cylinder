@@ -30,5 +30,5 @@ Syntax: \tdcylinder{x}{y}{z}{r}{h}{&theta;}{&phi;};
 
 ## Known issues
 
-1. Cause error when &theta; is set to 0.
+1. Cause error when &theta; of the main coordinate system is set to 0.
 1. When viewing a cylinder from the bottom, the `\filldraw` commands must be done in reverse order.
