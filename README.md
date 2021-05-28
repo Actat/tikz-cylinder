@@ -1,5 +1,9 @@
 # tikz-cylinder
 
+Draw cylinder in tikz-3dprint environment.
+
+![sample image](sample/sample_cylinders.png)
+
 ## Usage
 
 You can compile `cylinder.tex` and get `cylinder.pdf`.
