@@ -7,26 +7,46 @@
     \CalculateSin{#7};
     \CalculateCos{#7};
 
-    \tdplotcrossprod(\UseSin{#6} * \UseSin{#7}, -1 * \UseSin{#6} * \UseCos{#7}, \UseCos{#6})(0, 0, 1);
-    \pgfmathsetmacro\lenV{sqrt(\tdplotresx * \tdplotresx + \tdplotresy * \tdplotresy + \tdplotresz * \tdplotresz)}
-    \pgfmathsetmacro\ex{\tdplotresx / \lenV}
-    \pgfmathsetmacro\ey{\tdplotresy / \lenV}
-    \pgfmathsetmacro\ez{\tdplotresz / \lenV}
-    \pgfmathsetmacro\sa{#7 + 180}
+    \tdplottransformmainrot{\UseSin{#6} * \UseSin{#7}}{-1 * \UseSin{#6} * \UseCos{#7}}{\UseCos{#6}};% camera vector
+    \pgfmathsetmacro\cx{\tdplotresx};
+    \pgfmathsetmacro\cy{\tdplotresy};
+    \pgfmathsetmacro\cz{\tdplotresz};
+    \tdplotcrossprod(\cx, \cy, \cz)(0, 0, 1)
+    \pgfmathsetmacro\lenV{sqrt(\tdplotresx * \tdplotresx + \tdplotresy * \tdplotresy + \tdplotresz * \tdplotresz)};
+    \pgfmathsetmacro\tx{#4 * \tdplotresx / \lenV};% tangent point
+    \pgfmathsetmacro\ty{#4 * \tdplotresy / \lenV};
+    \pgfmathsetmacro\tz{#4 * \tdplotresz / \lenV};
+    \pgfmathsetmacro\sa{atan2(\ty, \tx)};
 
-    \filldraw [fill=white, draw=black] (#1 + #4, #2, #3) arc (0:360:#4);
-    \filldraw [fill=white, draw=black] (#1 + #4 * \ex, #2 + #4 * \ey, #3) arc (\sa:\sa + 180:#4) -- (#1 - #4 * \ex, #2 - #4 * \ey, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;
-    \filldraw [fill=white, draw=black] (#1 + #4, #2, #3 + #5) arc (0:360:#4);
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3) arc (0:360:#4);
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);
+    %\draw[green, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1 + \cx, #2 + \cy, #3 + \cz);% camera vector
+    %\draw[blue, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1, #2, #3 + 1);% length vector
+    %\draw[red, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1 + \tx, #2 + \ty, #3) node[above]{\tx, \ty, \sa};% tangent point
 }
 
 \begin{document}
-\def\theta_d{70}
-\def\phi_d{30}
+\def\theta_d{60}
+\def\phi_d{120}
 \tdplotsetmaincoords{\theta_d}{\phi_d}
+
 \begin{tikzpicture}[tdplot_main_coords]
-    \tdcylinder{0}{0}{1}{0.3}{0.5}{\theta_d}{\phi_d};
-    \draw[thick, ->] (0, 0, 0) -- (1, 0, 0) node[left]{$x$};
-    \draw[thick, ->] (0, 0, 0) -- (0, 1, 0) node[below]{$y$};
-    \draw[thick, ->] (0, 0, 0) -- (0, 0, 1) node[left]{$z$};
+    % x axis
+    \tdplotsetrotatedcoords{0}{90}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+    % y axis
+    \tdplotsetrotatedcoords{90}{90}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+    % z axis
+    \tdplotsetrotatedcoords{0}{0}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+
+    \draw[thick, ->] (0, 0, 0) -- (10, 0, 0) node[left]{$x$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 10, 0) node[below]{$y$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 0, 10) node[left]{$z$};
 \end{tikzpicture}
 \end{document}
