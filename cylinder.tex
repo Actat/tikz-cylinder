@@ -1,6 +1,7 @@
 \documentclass[dvipdfmx]{standalone}
-\usepackage{tikz,tikz-3dplot}
 
+% --- copy and paste this part ---
+\usepackage{tikz,tikz-3dplot}
 \newcommand{\tdcylinder}[7]{% x, y, z, radius, height, theta_d, phi_d
     \CalculateSin{#6};
     \CalculateCos{#6};
@@ -22,6 +23,7 @@
     \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;% side
     \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);% top
 }
+% --- copy and paste this part ---
 
 \begin{document}
 \def\theta_d{60}
