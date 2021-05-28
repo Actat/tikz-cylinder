@@ -21,9 +21,6 @@
     \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3) arc (0:360:#4);
     \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;
     \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);
-    %\draw[green, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1 + \cx, #2 + \cy, #3 + \cz);% camera vector
-    %\draw[blue, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1, #2, #3 + 1);% length vector
-    %\draw[red, tdplot_rotated_coords, ->] (#1, #2, #3) -- (#1 + \tx, #2 + \ty, #3) node[above]{\tx, \ty, \sa};% tangent point
 }
 
 \begin{document}
