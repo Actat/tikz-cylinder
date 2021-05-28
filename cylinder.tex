@@ -1,0 +1,55 @@
+\documentclass[dvipdfmx]{standalone}
+
+% --- copy and paste this part ---
+\usepackage{tikz,tikz-3dplot}
+\newcommand{\tdcylinder}[7]{% x, y, z, radius, height, theta_d, phi_d
+    \CalculateSin{#6};
+    \CalculateCos{#6};
+    \CalculateSin{#7};
+    \CalculateCos{#7};
+
+    \tdplottransformmainrot{\UseSin{#6} * \UseSin{#7}}{-1 * \UseSin{#6} * \UseCos{#7}}{\UseCos{#6}};% camera vector
+    \pgfmathsetmacro\cx{\tdplotresx};
+    \pgfmathsetmacro\cy{\tdplotresy};
+    \pgfmathsetmacro\cz{\tdplotresz};
+    \tdplotcrossprod(\cx, \cy, \cz)(0, 0, 1)
+    \pgfmathsetmacro\lenV{sqrt(\tdplotresx * \tdplotresx + \tdplotresy * \tdplotresy + \tdplotresz * \tdplotresz)};
+    \pgfmathsetmacro\tx{#4 * \tdplotresx / \lenV};% tangent point
+    \pgfmathsetmacro\ty{#4 * \tdplotresy / \lenV};
+    \pgfmathsetmacro\tz{#4 * \tdplotresz / \lenV};
+    \pgfmathsetmacro\sa{atan2(\ty, \tx)};
+
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3) arc (0:360:#4);% bottom
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;% side
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);% top
+}
+% --- copy and paste this part ---
+
+\begin{document}
+\def\theta_d{60}
+\def\phi_d{120}
+\tdplotsetmaincoords{\theta_d}{\phi_d}
+
+\begin{tikzpicture}[tdplot_main_coords]
+    % x axis
+    \tdplotsetrotatedcoords{0}{90}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+    % y axis
+    \tdplotsetrotatedcoords{90}{90}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+    % z axis
+    \tdplotsetrotatedcoords{0}{0}{0};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+    % arbitrary direction
+    \tdplotsetrotatedcoords{45}{45}{45};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
+
+    \draw[thick, ->] (0, 0, 0) -- (10, 0, 0) node[left]{$x$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 10, 0) node[below]{$y$};
+    \draw[thick, ->] (0, 0, 0) -- (0, 0, 10) node[left]{$z$};
+\end{tikzpicture}
+\end{document}
