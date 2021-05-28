@@ -41,6 +41,10 @@
     \tdplotsetrotatedcoords{0}{0}{0};
     \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
     \tdplotresetrotatedcoordsorigin;
+    % arbitrary direction
+    \tdplotsetrotatedcoords{45}{45}{45};
+    \tdcylinder{0}{0}{7}{0.5}{1}{\theta_d}{\phi_d};
+    \tdplotresetrotatedcoordsorigin;
 
     \draw[thick, ->] (0, 0, 0) -- (10, 0, 0) node[left]{$x$};
     \draw[thick, ->] (0, 0, 0) -- (0, 10, 0) node[below]{$y$};
