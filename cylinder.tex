@@ -18,9 +18,9 @@
     \pgfmathsetmacro\tz{#4 * \tdplotresz / \lenV};
     \pgfmathsetmacro\sa{atan2(\ty, \tx)};
 
-    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3) arc (0:360:#4);
-    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;
-    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3) arc (0:360:#4);% bottom
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + \tx, #2 + \ty, #3) arc (\sa:\sa + 180:#4) -- (#1 - \tx, #2 - \ty, #3 + #5) arc (\sa - 180:\sa:#4) -- cycle;% side
+    \filldraw [fill=white, draw=black, tdplot_rotated_coords] (#1 + #4, #2, #3 + #5) arc (0:360:#4);% top
 }
 
 \begin{document}
